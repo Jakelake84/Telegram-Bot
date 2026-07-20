@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+    <title>Group Admin Bot</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        :root {
+            --bg: #06080f;
+            --bg-card: rgba(12, 18, 34, 0.88);
+            --text: #eef2ff;
+            --text2: #94a3b8;
+            --text3: #4a5080;
+            --border: rgba(0, 247, 255, 0.08);
+            --cyan: #00f5ff;
+            --purple: #7b2ff7;
+            --green: #00e676;
+            --gradient: linear-gradient(135deg, #00f5ff, #7b2ff7);
+            --shadow: 0 8px 32px rgba(0,0,0,0.5);
+            --radius: 16px;
+            --radius-sm: 10px;
+            --font: 'Inter', -apple-system, sans-serif;
+        }
+        html, body {
+            background: var(--bg);
+            color: var(--text);
+            font-family: var(--font);
+            -webkit-font-smoothing: antialiased;
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+        ::-webkit-scrollbar { display: none; }
+        * { scrollbar-width: none; }
+
+        .bg-orb {
+            position: fixed;
+            border-radius: 50%;
+            filter: blur(120px);
+            opacity: 0.10;
+            pointer-events: none;
+            z-index: 0;
+        }
+        .bg-orb:nth-child(1) { width: 500px; height: 500px; background: var(--cyan); top: -150px; right: -100px; }
+        .bg-orb:nth-child(2) { width: 400px; height: 400px; background: var(--purple); bottom: -100px; left: -100px; }
+
+        .container { max-width: 900px; margin: 0 auto; padding: 20px 16px; position: relative; z-index: 1; }
+
+        .header { text-align: center; padding: 40px 0 20px; }
+        .header .logo { font-size: 4rem; margin-bottom: 10px; }
+        .header h1 {
+            font-size: 2.8rem;
+            font-weight: 900;
+            background: var(--gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        .header p { color: var(--text2); font-size: 1.1rem; margin-top: 8px; }
+
+        .status-badge {
+            display: inline-block;
+            background: rgba(0, 230, 118, 0.12);
+            color: var(--green);
+            font-size: 0.7rem;
+            font-weight: 700;
+            padding: 6px 18px;
+            border-radius: 999px;
+            border: 0.5px solid var(--green);
+            margin-top: 12px;
+            animation: pulseBadge 2s ease-in-out infinite;
+        }
+        @keyframes pulseBadge { 0%,100% { opacity: 1; } 50% { opacity: 0.5; } }
+
+        .add-bot {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            padding: 24px;
+            text-align: center;
+            margin: 20px 0 30px;
+            backdrop-filter: blur(14px);
+        }
+        .add-bot h2 { font-size: 1.2rem; margin-bottom: 6px; }
+        .add-bot p { color: var(--text2); font-size: 0.85rem; margin-bottom: 16px; }
+        .btn {
+            display: inline-block;
+            padding: 14px 32px;
+            border-radius: var(--radius-sm);
+            font-weight: 700;
+            font-size: 0.9rem;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            border: none;
+            cursor: pointer;
+        }
+        .btn-primary {
+            background: var(--gradient);
+            color: #000;
+            box-shadow: 0 4px 20px rgba(0, 245, 255, 0.25);
+        }
+        .btn-primary:hover { transform: scale(1.03); box-shadow: 0 4px 30px rgba(0, 245, 255, 0.35); }
+        .btn-secondary {
+            background: rgba(255, 255, 255, 0.04);
+            color: var(--text);
+            border: 1px solid var(--border);
+        }
+        .btn-secondary:hover { background: rgba(255, 255, 255, 0.08); }
+        .btn-group { display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; }
+
+        .features { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 16px; margin: 30px 0; }
+        .feature {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            padding: 20px;
+            text-align: center;
+            backdrop-filter: blur(14px);
+            transition: all 0.3s ease;
+        }
+        .feature:hover { border-color: rgba(0, 245, 255, 0.15); transform: translateY(-4px); }
+        .feature .icon { font-size: 2rem; margin-bottom: 8px; }
+        .feature h3 { font-size: 0.9rem; margin-bottom: 4px; }
+        .feature p { color: var(--text2); font-size: 0.75rem; }
+
+        .commands {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            padding: 24px;
+            margin: 20px 0;
+            backdrop-filter: blur(14px);
+        }
+        .commands h2 { font-size: 1.2rem; margin-bottom: 16px; text-align: center; }
+        .cmd-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+        .cmd {
+            display: flex;
+            justify-content: space-between;
+            padding: 8px 12px;
+            background: rgba(255, 255, 255, 0.02);
+            border-radius: var(--radius-sm);
+            font-size: 0.75rem;
+            border: 0.5px solid var(--border);
+        }
+        .cmd .cmd-name { color: var(--cyan); font-weight: 700; font-family: monospace; }
+        .cmd .cmd-desc { color: var(--text2); }
+
+        .admin-commands { border-top: 1px solid var(--border); padding-top: 14px; margin-top: 14px; }
+        .admin-commands .cmd { border-color: rgba(123, 47, 247, 0.2); }
+        .admin-commands .cmd .cmd-name { color: var(--purple); }
+
+        .footer { text-align: center; padding: 30px 0 20px; color: var(--text3); font-size: 0.7rem; border-top: 0.5px solid var(--border); margin-top: 20px; }
+
+        @media (max-width: 600px) {
+            .header h1 { font-size: 2rem; }
+            .cmd-grid { grid-template-columns: 1fr; }
+            .btn-group { flex-direction: column; align-items: center; }
+            .btn { width: 100%; text-align: center; }
+        }
+    </style>
+</head>
+<body>
+
+<div class="bg-orb"></div>
+<div class="bg-orb"></div>
+
+<div class="container">
+
+    <div class="header">
+        <div class="logo">🤖</div>
+        <h1>Group Admin Bot</h1>
+        <p>The ultimate moderation bot for your Telegram groups</p>
+        <div class="status-badge"><i class="fas fa-circle" style="font-size:0.4rem;margin-right:6px;"></i> Online</div>
+    </div>
+
+    <div class="add-bot">
+        <h2>🚀 Add Bot to Your Group</h2>
+        <p>Invite the bot as an admin and start moderating instantly!</p>
+        <div class="btn-group">
+            <a href="https://t.me/locknode_alerts_bot?startgroup=true" target="_blank" class="btn btn-primary">
+                <i class="fas fa-plus-circle"></i> Add to Group
+            </a>
+            <a href="https://t.me/locknode_alerts_bot" target="_blank" class="btn btn-secondary">
+                <i class="fas fa-comment"></i> Start Bot
+            </a>
+        </div>
+    </div>
+
+    <div class="features">
+        <div class="feature">
+            <div class="icon">🛡️</div>
+            <h3>Auto-Moderation</h3>
+            <p>Delete spam, ban users, and keep your group clean automatically</p>
+        </div>
+        <div class="feature">
+            <div class="icon">⚡</div>
+            <h3>Instant Actions</h3>
+            <p>Moderate with simple commands like .del, .ban, .kick</p>
+        </div>
+        <div class="feature">
+            <div class="icon">📊</div>
+            <h3>Analytics</h3>
+            <p>Track warnings, view stats, and monitor group activity</p>
+        </div>
+    </div>
+
+    <div class="commands">
+        <h2>📋 User Commands</h2>
+        <div class="cmd-grid">
+            <div class="cmd"><span class="cmd-name">/help</span><span class="cmd-desc">Show all commands</span></div>
+            <div class="cmd"><span class="cmd-name">/rules</span><span class="cmd-desc">View group rules</span></div>
+            <div class="cmd"><span class="cmd-name">/id</span><span class="cmd-desc">Get your user ID</span></div>
+            <div class="cmd"><span class="cmd-name">/info</span><span class="cmd-desc">Your profile info</span></div>
+            <div class="cmd"><span class="cmd-name">/ping</span><span class="cmd-desc">Check bot response time</span></div>
+            <div class="cmd"><span class="cmd-name">/report @user</span><span class="cmd-desc">Report a user to admin</span></div>
+        </div>
+
+        <div class="admin-commands">
+            <h2>🔑 Admin Commands</h2>
+            <div class="cmd-grid">
+                <div class="cmd"><span class="cmd-name">.del</span><span class="cmd-desc">Delete replied message</span></div>
+                <div class="cmd"><span class="cmd-name">.ban</span><span class="cmd-desc">Ban user</span></div>
+                <div class="cmd"><span class="cmd-name">.kick</span><span class="cmd-desc">Kick user</span></div>
+                <div class="cmd"><span class="cmd-name">.mute</span><span class="cmd-desc">Mute user (5 min)</span></div>
+                <div class="cmd"><span class="cmd-name">.unmute</span><span class="cmd-desc">Unmute user</span></div>
+                <div class="cmd"><span class="cmd-name">.warn</span><span class="cmd-desc">Warn user (3 = ban)</span></div>
+                <div class="cmd"><span class="cmd-name">.purge 10</span><span class="cmd-desc">Delete messages</span></div>
+                <div class="cmd"><span class="cmd-name">.lock</span><span class="cmd-desc">Lock group chat</span></div>
+                <div class="cmd"><span class="cmd-name">.unlock</span><span class="cmd-desc">Unlock group chat</span></div>
+                <div class="cmd"><span class="cmd-name">.pin</span><span class="cmd-desc">Pin message</span></div>
+                <div class="cmd"><span class="cmd-name">.unpin</span><span class="cmd-desc">Unpin message</span></div>
+                <div class="cmd"><span class="cmd-name">.slowmode 5</span><span class="cmd-desc">Set slow mode (seconds)</span></div>
+                <div class="cmd"><span class="cmd-name">.setrules</span><span class="cmd-desc">Set group rules</span></div>
+                <div class="cmd"><span class="cmd-name">.rules</span><span class="cmd-desc">Show group rules</span></div>
+                <div class="cmd"><span class="cmd-name">.adminlist</span><span class="cmd-desc">List all admins</span></div>
+                <div class="cmd"><span class="cmd-name">.stats</span><span class="cmd-desc">Group statistics</span></div>
+                <div class="cmd"><span class="cmd-name">.info</span><span class="cmd-desc">User info (reply)</span></div>
+                <div class="cmd"><span class="cmd-name">.id</span><span class="cmd-desc">Get user/chat ID</span></div>
+            </div>
+        </div>
+    </div>
+
+    <div style="text-align:center;margin:20px 0;">
+        <a href="https://t.me/locknode_alerts_bot?startgroup=true" target="_blank" class="btn btn-primary" style="font-size:1rem;padding:16px 40px;">
+            <i class="fas fa-rocket"></i> Add Bot to Group Now
+        </a>
+    </div>
+
+    <div class="footer">
+        <p>© 2026 Group Admin Bot • Made with ❤️</p>
+        <p style="margin-top:4px;">Bot is running 24/7 • Free to use</p>
+    </div>
+
+</div>
+
+</body>
+</html>
