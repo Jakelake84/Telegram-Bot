@@ -6,7 +6,7 @@ const path = require('path');
 // ============================================================
 // 🔥 BOT CONFIG
 // ============================================================
-const BOT_TOKEN = '8604504350:AAEEYDta9iHgqaGdgWT8N1h13YpMZb_gbYg';
+const BOT_TOKEN = '8711220608:AAHHxACM2Xj_fLCdzutf3EbQn7aGvqXESaM';
 const ADMIN_ID = '8595999663';
 
 // ============================================================
